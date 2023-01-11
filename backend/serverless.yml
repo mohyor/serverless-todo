@@ -45,15 +45,15 @@ provider:
 
 
 functions:
-  hello:
-    handler: handler.hello
-    events:
-     - httpApi:
-         path: /
-         method: get
+#  hello:
+#    handler: handler.hello
+#    events:
+#     - httpApi:
+#         path: /
+#         method: get
 
-  # Auth:
-  #  handler: src/lambda/auth/auth0Authorizer.handler
+   Auth:
+    handler: src/lambda/auth/auth0Authorizer.handler
 
   # TODO: Configure this function - 
   # Provide iamRoleStatements property for performing Actions on DynamoDB
