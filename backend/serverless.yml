@@ -7,6 +7,8 @@ plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
   - serverless-plugin-tracing
+  - serverless-aws-documentation
+  - serverless-reqvalidator-plugin
 
 provider:
   name: aws
@@ -23,12 +25,14 @@ provider:
   # Use these variables in the functions and resouorces section below. For example, 
   # ${self:provider.environment.ATTACHMENT_S3_BUCKET}
   environment:
-    TODOS_TABLE: Serverless-c4-todo-app-5-${self:provider.stage}
-    TODOS_CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: serverless-c4-todo-images-${self:provider.stage}
-    SIGNED_URL_EXPIRATION: 300
-    PROJECT_NAME: serverless-todo-app-5
-    INDEX_NAME: ${self:provider.environment.TODOS_CREATED_AT_INDEX}
+    PROJECT_NAME: serverless-todo-app
+    TODOS_TABLE: serverless-todo-app-${self:provider.stage}
+    S3_BUCKET_NAME: serverless-todo-app-${self:provider.stage}
+   
+    # TODOS_CREATED_AT_INDEX: CreatedAtIndex
+    # ATTACHMENT_S3_BUCKET: serverless-c4-todo-images-${self:provider.stage}
+    # SIGNED_URL_EXPIRATION: 300
+    # INDEX_NAME: ${self:provider.environment.TODOS_CREATED_AT_INDEX}
 
   logs:
     # Enable API Gateway logs
