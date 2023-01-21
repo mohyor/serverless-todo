@@ -82,3 +82,6 @@ function getToken(authHeader: string): string {
 
   return token
 }
+
+
+// const jwksUrl = 'https://dev-c46eiac8app8n2k3.us.auth0.com/.well-known/jwks.json'

@@ -1,12 +1,12 @@
 import { parseUserId } from "../auth/utils"
-import { TodosAccess } from "../dataLayer/todosAccess"
+import { ToDoAccess } from "../dataLayer/TodoAccess"
 import { TodoItem } from "../models/TodoItem"
 import { TodoUpdate } from "../models/TodoUpdate"
 import { CreateTodoRequest } from "../requests/CreateTodoRequest"
 import { UpdateTodoRequest } from "../requests/UpdateTodoRequest"
 
 const uuidv4 = require('uuid/v4')
-const toDoAccess = new TodosAccess()
+const toDoAccess = new ToDoAccess()
 
 export async function getAllToDo(jwtToken:string) : Promise<TodoItem[]> {
     const userId = parseUserId(jwtToken)
