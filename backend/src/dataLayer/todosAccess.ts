@@ -47,30 +47,37 @@ export class TodosAccess {
     return todoItem as TodoItem
   }
 
-  async updateTodoItem(todoId: string, userId: string, todoUpdate: TodoUpdate): Promise<TodoUpdate> {
+  async updateTodoItem(userId: string, todoId: string, todoUpdate: TodoUpdate): Promise<TodoUpdate> {
 
     logger.info('Update todo function called')
 
-    await this.docClient.update({
+    const result = await this.docClient.update({
       TableName: this.todosTable, 
       Key: { todoId, userId },
       UpdateExpression: 'set #name = :name, dueDate = :dueDate, done = :done',
       ExpressionAttributeValues: {
         ':name': todoUpdate.name, ':dueDate': todoUpdate.dueDate, ':done': todoUpdate.done
       },
-      ExpressionAttributeNames: { '#name': 'name' }
+      ExpressionAttributeNames: { '#name': 'name' },
+      ReturnValues: 'UPDATED_NEW'
     }).promise()
 
-    return todoUpdate
+    logger.info('Todo item updated', result)
+
+    return todoUpdate as TodoUpdate
   }
 
-  async deleteTodoItem(todoId: string, userId: string): Promise<void> {
+  async deleteTodoItem(todoId: string, userId: string): Promise<string> {
 
     logger.info('Delete todo item function called')
 
-    await this.docClient.delete({
+    const result = await this.docClient.delete({
       TableName: this.todosTable, Key: { todoId, userId }
     }).promise()
+
+    logger.info('Todo item deleted', result)
+
+    return todoId as string
   }
 
   async updateTodoAttachmentUrl(todoId: string, userId: string, attachmentUrl: string): Promise<void> {
