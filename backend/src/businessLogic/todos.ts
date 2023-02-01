@@ -37,8 +37,8 @@ export async function createTodo(newTodo: CreateTodoRequest, userId: string): Pr
   return await todosAccess.createTodoItem(newItem)
 }
 
-export async function updateTodo(userId: string, todoId: string, todoUpdate: UpdateTodoRequest): 
- Promise<UpdateTodoRequest> {
+export async function updateTodo(todoId: string, todoUpdate: UpdateTodoRequest, userId: string): 
+ Promise<TodoUpdate> {
 
   logger.info('Update todo function called')
 
