@@ -110,10 +110,6 @@ functions:
             description: Create a todo task
             requestModels:
               'application/json': CreateTodoRequest
-#         request:
-#            schemas:
-#              application/json: ${file(models/create-todo-model.json)}
-#    iamRoleStatementsInherit: true
     iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-create-todo-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
@@ -142,9 +138,6 @@ functions:
             description: Update a todo task
             requestModels:
               'application/json': UpdateTodoRequest
-  #         request:
-  #            schemas:
-  #              application/json: ${file(models/create-todo-model.json)}
     iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-update-todo-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
@@ -168,15 +161,12 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
-          #reqValidatorName: RequestBodyValidator
-          #documentation:
-            #summary: Update a new todo task
-            #description: Update a todo task
-            #requestModels:
-              #'application/json': UpdateTodoRequest
-  #         request:
-  #            schemas:
-  #              application/json: ${file(models/create-todo-model.json)}
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Delete a new todo task
+            description: Delete a todo task
+            requestModels:
+              'application/json': UpdateTodoRequest
     iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-delete-todo-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
@@ -200,15 +190,12 @@ functions:
           path: todos/{todoId}/attachment
           cors: true
           authorizer: Auth
-          #reqValidatorName: RequestBodyValidator
-          #documentation:
-            #summary: Update a new todo task
-            #description: Update a todo task
-            #requestModels:
-              #'application/json': UpdateTodoRequest
-  #         request:
-  #            schemas:
-  #              application/json: ${file(models/create-todo-model.json)}
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Uploading the attachment url.
+            description: Generating the upload URL for a TODO item attachment.
+            requestModels:
+              'application/json': UpdateTodoRequest
     iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-generate-s3-upload-url-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
