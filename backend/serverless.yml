@@ -2,7 +2,6 @@
 org: mohyor
 app: serverless-todo-app
 service: serverless-todo-app
-frameworkVersion: '3.26.0'
 
 plugins:
   - serverless-webpack
@@ -14,7 +13,6 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
-  #lambdaHashingVersion: '20201221'
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
@@ -24,7 +22,6 @@ provider:
     apiGateway: true
 
   # Use these variables in the functions and resouorces section below. For example, 
-  # ${self:provider.environment.ATTACHMENT_S3_BUCKET}
   environment:
     TODOS_TABLE: Todos-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
@@ -52,7 +49,7 @@ custom:
       info:
         version: v1.0.0
         title: Todos App
-        description: Serverless application for todos monitoring
+        description: Serverless Todo App
     models:
       - name: CreateTodoRequest
         contentType: application/json
@@ -106,10 +103,8 @@ functions:
           authorizer: Auth
           reqValidatorName: RequestBodyValidator
           documentation:
-            summary: Create a new todo task
-            description: Create a todo task
-            requestModels:
-              'application/json': CreateTodoRequest
+            summary: Creating Todo Task
+            description: Creating a new Todo Task
     iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-create-todo-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
@@ -134,10 +129,8 @@ functions:
           authorizer: Auth
           reqValidatorName: RequestBodyValidator
           documentation:
-            summary: Update a new todo task
-            description: Update a todo task
-            requestModels:
-              'application/json': UpdateTodoRequest
+            summary: Updating Todo Task
+            description: Update a Todo Task
     iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-update-todo-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
@@ -163,10 +156,8 @@ functions:
           authorizer: Auth
           reqValidatorName: RequestBodyValidator
           documentation:
-            summary: Delete a new todo task
-            description: Delete a todo task
-            requestModels:
-              'application/json': UpdateTodoRequest
+            summary: Deleting Todo Task
+            description: Delete a Todo Task
     iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-delete-todo-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
@@ -192,10 +183,8 @@ functions:
           authorizer: Auth
           reqValidatorName: RequestBodyValidator
           documentation:
-            summary: Uploading the attachment url.
-            description: Generating the upload URL for a TODO item attachment.
-            requestModels:
-              'application/json': UpdateTodoRequest
+            summary: Generating Attachment URL
+            description: Generating a pre-signed url.
     iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-generate-s3-upload-url-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow

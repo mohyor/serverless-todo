@@ -1,11 +1,11 @@
-import { CustomAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda'
 import 'source-map-support/register'
+import { CustomAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda'
 
 import { verify, decode } from 'jsonwebtoken'
 import { createLogger } from '../../utils/logger'
 import Axios from 'axios'
-import { Jwt } from '../../auth/Jwt'
 import { JwtPayload } from '../../auth/JwtPayload'
+import { Jwt } from '../../auth/Jwt'
 
 const logger = createLogger('auth')
 
@@ -17,11 +17,14 @@ const jwksUrl = 'https://dev-c46eiac8app8n2k3.us.auth0.com/.well-known/jwks.json
 export const handler = async (
   event: CustomAuthorizerEvent
 ): Promise<CustomAuthorizerResult> => {
-  logger.info('Authorizing a user', event.authorizationToken)
+  
+  logger.info('Authorizing User', event.authorizationToken)
 
   try {
+    
     const jwtToken = await verifyToken(event.authorizationToken)
-    logger.info('User was authorized', jwtToken)
+    
+    logger.info('Authorizing User', jwtToken)
 
     return {
       principalId: jwtToken.sub,
@@ -57,26 +60,27 @@ export const handler = async (
 
 async function verifyToken(authHeader: string): Promise<JwtPayload> {
   
-  logger.info('Verifying Token')
+  logger.info('Verifying Authorization Token')
   
   const token = getToken(authHeader)
+
   const jwt: Jwt = decode(token, { complete: true }) as Jwt
 
   // TODO: Implement token verification
   // You should implement it similarly to how it was implemented for the exercise for the lesson 5
   // You can read more about how to do this here: https://auth0.com/blog/navigating-rs256-and-jwks/
   const response = await Axios.get(jwksUrl)
+  
   const keys = response.data.keys
-  const signingKeys = keys.find(key => key.kid === jwt.header.kid)
+  
+  const signedKeys = keys.find(key => key.kid === jwt.header.kid)
 
-  logger.info('signingKeys', signingKeys)
+  logger.info('signedKeys', signedKeys)
 
-  if(!signingKeys) {
-    throw new Error('The JWKS endpoint did not contain any keys')
-  }
+  if(!signedKeys) throw new Error('Keys not contained JWKS endpoint.')
 
   // get pem data
-  const pemData = signingKeys.x5c[0]
+  const pemData = signedKeys.x5c[0]
 
   // convert pem data to cert
   const cert = `-----BEGIN CERTIFICATE-----\n${pemData}\n-----END CERTIFICATE-----`
@@ -90,15 +94,17 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
 }
 
 function getToken(authHeader: string): string {
+
   if (!authHeader) throw new Error('No authentication header')
 
-  if (!authHeader.toLowerCase().startsWith('bearer '))
+  if (!authHeader.toLowerCase().startsWith('bearer ')) {
+
     throw new Error('Invalid authentication header')
+  }
 
   const split = authHeader.split(' ')
+
   const token = split[1]
 
   return token
 }
-
-// const jwksUrl = 'https://dev-c46eiac8app8n2k3.us.auth0.com/.well-known/jwks.json'
