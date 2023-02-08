@@ -105,6 +105,8 @@ functions:
           documentation:
             summary: Creating Todo Task
             description: Creating a new Todo Task
+            requestModels:
+              'application/json': CreateTodoRequest
     iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-create-todo-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
@@ -131,6 +133,8 @@ functions:
           documentation:
             summary: Updating Todo Task
             description: Update a Todo Task
+            requestModels:
+              'application/json': UpdateTodoRequest
     iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-update-todo-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
